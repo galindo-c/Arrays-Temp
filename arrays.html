@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arreglos · Guía Completa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:   #F5F2EB;
+  --paper2:  #EDEAE0;
+  --ink:     #1A1A2E;
+  --ink2:    #2D2D4E;
+  --ink3:    #6B6B8A;
+  --blue:    #1E40AF;
+  --blue2:   #3B5FD4;
+  --blue-lt: #DBEAFE;
+  --red:     #B91C1C;
+  --red-lt:  #FEE2E2;
+  --green:   #15803D;
+  --green-lt:#DCFCE7;
+  --amber:   #B45309;
+  --amber-lt:#FEF3C7;
+  --grid:    rgba(30,64,175,0.08);
+  --border:  rgba(30,64,175,0.18);
+  --mono:    'Fira Code', monospace;
+  --serif:   'DM Serif Display', serif;
+  --sans:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.72;
+
+  /* Grid de cuaderno como fondo */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── LAYOUT ── */
+.page-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── NAV ── */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(245,242,235,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0 24px;
+}
+.top-nav-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.top-nav-inner::-webkit-scrollbar { display: none; }
+.top-nav a {
+  display: block;
+  padding: 14px 16px;
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--ink3);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all .18s;
+}
+.top-nav a:hover { color: var(--blue2); border-bottom-color: var(--blue2); }
+.top-nav a.active { color: var(--blue); border-bottom-color: var(--blue); }
+.nav-brand {
+  font-family: var(--mono);
+  font-size: .75rem;
+  color: var(--blue);
+  font-weight: 600;
+  padding: 14px 20px 14px 0;
+  border-right: 1.5px solid var(--border);
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 72px 0 56px;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 64px;
+}
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--blue2);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 48px;
+  background: var(--blue2);
+}
+.hero h1 {
+  font-family: var(--serif);
+  font-size: 3.4rem;
+  line-height: 1.1;
+  color: var(--ink);
+  max-width: 640px;
+  margin-bottom: 22px;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--blue);
+}
+.hero-lead {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  max-width: 560px;
+  line-height: 1.78;
+  margin-bottom: 28px;
+}
+.hero-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.htag {
+  font-family: var(--mono);
+  font-size: .72rem;
+  padding: 4px 12px;
+  border-radius: 3px;
+  border: 1px solid;
+}
+.htag.b { color: var(--blue); border-color: var(--blue); background: var(--blue-lt); }
+.htag.r { color: var(--red); border-color: var(--red); background: var(--red-lt); }
+.htag.g { color: var(--green); border-color: var(--green); background: var(--green-lt); }
+
+/* ── SECCIONES ── */
+.sec {
+  margin-bottom: 72px;
+  scroll-margin-top: 58px;
+}
+.sec-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.sec-num {
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--blue2);
+  opacity: .55;
+  letter-spacing: .5px;
+}
+h2 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.sec-desc {
+  color: var(--ink3);
+  font-size: .88rem;
+  margin-bottom: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 30px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+h3::before {
+  content: '';
+  display: block;
+  width: 14px;
+  height: 2px;
+  background: var(--blue);
+  flex-shrink: 0;
+}
+p { margin-bottom: 14px; }
+strong { color: var(--ink); }
+
+/* ── CODE BLOCKS ── */
+.cb {
+  background: var(--ink);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 20px 0;
+  box-shadow: 0 2px 12px rgba(26,26,46,.12);
+}
+.cb-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  background: rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.cb-lang {
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: #7DD3FC;
+  letter-spacing: .5px;
+}
+.cb-dots { display: flex; gap: 5px; }
+.cb-dots span { width: 9px; height: 9px; border-radius: 50%; }
+.dot-r { background: #FF5F57; }
+.dot-y { background: #FEBC2E; }
+.dot-g { background: #28C840; }
+.cb pre {
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: .83rem;
+  line-height: 1.9;
+  overflow-x: auto;
+  color: #CDD9E5;
+}
+.kw  { color: #7DD3FC; font-weight: 600; }
+.kw2 { color: #C084FC; font-weight: 600; }
+.str { color: #86EFAC; }
+.num { color: #FCA5A5; }
+.cmt { color: #6B7A8D; font-style: italic; }
+.fn  { color: #FDE68A; }
+.var { color: #E2E8F0; }
+.hi  { color: #F97316; font-weight: 600; }
+
+/* ── CALLOUTS ── */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 22px 0;
+  font-size: .9rem;
+  border-left: 3px solid;
+  line-height: 1.65;
+}
+.callout.info   { background: var(--blue-lt);  border-color: var(--blue);  color: var(--ink2); }
+.callout.danger { background: var(--red-lt);   border-color: var(--red);   color: var(--ink2); }
+.callout.ok     { background: var(--green-lt); border-color: var(--green); color: var(--ink2); }
+.callout.warn   { background: var(--amber-lt); border-color: var(--amber); color: var(--ink2); }
+.callout-title {
+  font-weight: 700;
+  font-family: var(--mono);
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 6px;
+  display: block;
+}
+.callout.info .callout-title   { color: var(--blue); }
+.callout.danger .callout-title { color: var(--red); }
+.callout.ok .callout-title     { color: var(--green); }
+.callout.warn .callout-title   { color: var(--amber); }
+
+/* ── TABLA ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  margin: 22px 0;
+  background: rgba(255,255,255,.6);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(30,64,175,.08);
+}
+th {
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: .72rem;
+  letter-spacing: .4px;
+  text-align: left;
+  padding: 10px 14px;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(30,64,175,.04); }
+td code, th code {
+  font-family: var(--mono);
+  font-size: .8rem;
+  background: rgba(30,64,175,.1);
+  color: var(--blue);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ════════════════════════════════
+   SECCIÓN INTERACTIVA — EL GRAN ELEMENTO FIRMA
+   Una cuadrícula interactiva donde el usuario
+   puede marcar celdas y ver sus índices
+════════════════════════════════ */
+.matrix-demo {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  margin: 28px 0;
+  box-shadow: 0 2px 16px rgba(30,64,175,.07);
+}
+.matrix-demo-title {
+  font-family: var(--mono);
+  font-size: .75rem;
+  color: var(--ink3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.matrix-demo-title::after {
+  content: 'Haz clic en una celda';
+  font-size: .7rem;
+  color: var(--blue2);
+  background: var(--blue-lt);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.matrix-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 24px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+.matrix-tab {
+  padding: 8px 20px;
+  font-size: .82rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--ink3);
+  transition: all .18s;
+  font-family: var(--sans);
+}
+.matrix-tab.active { background: var(--blue); color: #fff; }
+
+.grids-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.grid-panel h4 {
+  font-family: var(--mono);
+  font-size: .78rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.grid-panel.matrix-panel h4 { background: var(--green-lt); color: var(--green); }
+.grid-panel.cart-panel h4   { background: var(--red-lt);   color: var(--red); }
+
+/* La cuadrícula interactiva */
+.imatrix {
+  display: inline-grid;
+  gap: 3px;
+  user-select: none;
+}
+.imatrix-with-labels {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+.col-labels {
+  display: flex;
+  gap: 3px;
+  margin-left: 30px;
+  margin-bottom: 4px;
+}
+.col-label {
+  width: 46px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--blue2);
+  font-weight: 600;
+}
+.row-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 0;
+}
+.row-label {
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-family: var(--mono);
+  font-size: .68rem;
+  color: var(--blue2);
+  font-weight: 600;
+  width: 24px;
+}
+.mcell {
+  width: 46px;
+  height: 46px;
+  background: var(--paper2);
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: transparent;
+  transition: all .15s;
+  position: relative;
+}
+.mcell:hover { background: var(--blue-lt); border-color: var(--blue2); }
+.mcell.selected {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 2px 10px rgba(30,64,175,.35);
+  z-index: 2;
+}
+.mcell.row-hi  { background: rgba(30,64,175,.1); border-color: rgba(30,64,175,.3); }
+.mcell.col-hi  { background: rgba(30,64,175,.1); border-color: rgba(30,64,175,.3); }
+
+.info-panel {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: var(--paper2);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: .8rem;
+  min-height: 52px;
+  color: var(--ink3);
+  transition: all .2s;
+}
+.info-panel.active { background: var(--blue-lt); color: var(--ink); border-color: var(--blue2); }
+.info-panel .idx { color: var(--blue); font-weight: 700; font-size: .95rem; }
+.info-panel .label { font-size: .72rem; color: var(--ink3); display: block; margin-top: 3px; }
+
+/* Plano cartesiano SVG */
+.cart-svg-wrap { background: var(--paper2); border-radius: 6px; border: 1px solid var(--border); overflow: hidden; }
+
+/* ── COMPARACIÓN LADO A LADO ── */
+.split-compare {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 0;
+  margin: 28px 0;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(30,64,175,.06);
+}
+.split-col {
+  padding: 24px 22px;
+}
+.split-col h5 {
+  font-family: var(--mono);
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  margin-bottom: 14px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.split-col.sc-r h5 { background: var(--red-lt); color: var(--red); }
+.split-col.sc-g h5 { background: var(--green-lt); color: var(--green); }
+.split-col ul { list-style: none; }
+.split-col ul li {
+  font-size: .87rem;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(30,64,175,.08);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.split-col ul li:last-child { border-bottom: none; }
+.split-col ul li::before {
+  margin-top: 2px;
+  flex-shrink: 0;
+  font-size: .75rem;
+}
+.split-col.sc-r ul li::before { content: "✗"; color: var(--red); }
+.split-col.sc-g ul li::before { content: "✓"; color: var(--green); }
+.split-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper2);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  writing-mode: vertical-rl;
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* ── ERROR DEMO ── */
+.error-demo {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 24px 0;
+  box-shadow: 0 2px 12px rgba(30,64,175,.06);
+}
+.error-demo-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: .75rem;
+  color: var(--ink3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.badge-error { background: var(--red-lt); color: var(--red); padding: 2px 8px; border-radius: 3px; font-size: .68rem; font-weight: 700; }
+.badge-ok { background: var(--green-lt); color: var(--green); padding: 2px 8px; border-radius: 3px; font-size: .68rem; font-weight: 700; }
+
+/* ── NORMAS ISO ── */
+.iso-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0;
+}
+.iso-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 18px;
+  align-items: start;
+  box-shadow: 0 1px 4px rgba(30,64,175,.06);
+}
+.iso-badge {
+  font-family: var(--mono);
+  font-size: .68rem;
+  font-weight: 700;
+  background: var(--ink);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  letter-spacing: .3px;
+}
+.iso-card h5 { font-size: .92rem; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+.iso-card p  { font-size: .85rem; color: var(--ink2); margin: 0; line-height: 1.6; }
+.iso-card .iso-detail {
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--blue2);
+  margin-top: 6px;
+  display: block;
+}
+
+/* ── FUENTES ── */
+.source-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 22px 0;
+}
+.source-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 0 14px;
+  align-items: start;
+  transition: border-color .18s, box-shadow .18s;
+  text-decoration: none;
+  color: inherit;
+}
+.source-card:hover { border-color: var(--blue2); box-shadow: 0 2px 12px rgba(30,64,175,.12); }
+.source-num {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: .72rem;
+  font-weight: 700;
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.source-card h5 { font-size: .9rem; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.source-card p  { font-size: .82rem; color: var(--ink2); margin: 0 0 5px; line-height: 1.5; }
+.source-url { font-family: var(--mono); font-size: .72rem; color: var(--blue2); }
+
+/* ── FOOTER ── */
+.page-footer {
+  border-top: 1.5px solid var(--border);
+  padding: 32px 0;
+  margin-top: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .78rem;
+  color: var(--ink3);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.page-footer span { font-family: var(--mono); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 680px) {
+  .hero h1 { font-size: 2.2rem; }
+  .grids-container { grid-template-columns: 1fr; }
+  .split-compare { grid-template-columns: 1fr; }
+  .split-divider { display: none; }
+  main { padding: 0 16px 60px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="top-nav-inner">
+    <span class="nav-brand">arreglos[]</span>
+    <a href="#unidim">Unidimensionales</a>
+    <a href="#multidim">Bidimensionales</a>
+    <a href="#interactivo">Demo interactiva</a>
+    <a href="#nocartesiano">≠ Plano cartesiano</a>
+    <a href="#normas">Normas ISO</a>
+    <a href="#fuentes">Fuentes</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Lógica de Programación · Estructuras de Datos</div>
+  <h1>Arreglos:<br><em>de lo simple<br>a lo multidimensional</em></h1>
+  <p class="hero-lead">Una guía completa sobre cómo funcionan los arreglos en PSeInt y en cualquier lenguaje de programación — más una explicación rigurosa de por qué un arreglo 2D <strong>no es ni funciona igual</strong> que un plano cartesiano.</p>
+  <div class="hero-tags">
+    <span class="htag b">PSeInt</span>
+    <span class="htag b">Python · Java · C++</span>
+    <span class="htag r">≠ Plano Cartesiano</span>
+    <span class="htag g">ISO/IEC 9899 · 14882</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     1. ARREGLOS UNIDIMENSIONALES
+══════════════════════════════════════ -->
+<section class="sec" id="unidim">
+  <div class="sec-header">
+    <span class="sec-num">§ 1</span>
+    <h2>Arreglos unidimensionales</h2>
+  </div>
+  <p class="sec-desc">Una sola fila de casillas numeradas — la estructura más básica de colección</p>
+
+  <p>Un arreglo (también llamado <em>array</em>, <em>vector</em> o <em>lista</em> según el lenguaje) es una colección de elementos del <strong>mismo tipo de dato</strong>, almacenados de forma <strong>contigua en memoria</strong> y accesibles mediante un índice numérico.</p>
+
+  <p>Imagínalo como una fila de casilleros en un gimnasio: todos tienen el mismo tamaño, están uno al lado del otro, y cada uno tiene un número único en la puerta.</p>
+
+  <div class="cb">
+    <div class="cb-top">
+      <span class="cb-lang">PSeInt — declaración y uso básico</span>
+      <div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+    </div>
+    <pre>
+<span class="kw">Algoritmo</span> <span class="fn">EjemploArreglo</span>
+    <span class="cmt">// Declarar arreglo de 5 enteros</span>
+    <span class="kw">Definir</span> <span class="var">temperaturas</span> <span class="kw">Como</span> <span class="kw2">Real</span>[<span class="num">5</span>]
+    <span class="kw">Definir</span> <span class="var">i</span> <span class="kw">Como</span> <span class="kw2">Entero</span>
+
+    <span class="cmt">// Llenar el arreglo con un ciclo</span>
+    <span class="kw">Para</span> <span class="var">i</span> &lt;- <span class="num">1</span> <span class="kw">Hasta</span> <span class="num">5</span> <span class="kw">Hacer</span>
+        <span class="kw">Escribir</span> <span class="str">"Temperatura del día "</span>, <span class="var">i</span>, <span class="str">":"</span>
+        <span class="kw">Leer</span> <span class="var">temperaturas</span>[<span class="var">i</span>]
+    <span class="kw">FinPara</span>
+
+    <span class="cmt">// Acceder a un elemento específico</span>
+    <span class="kw">Escribir</span> <span class="str">"Temperatura del día 3: "</span>, <span class="var">temperaturas</span>[<span class="num">3</span>]
+<span class="kw">FinAlgoritmo</span>
+    </pre>
+  </div>
+
+  <div class="callout info">
+    <span class="callout-title">📌 Índices: PSeInt vs lenguajes reales</span>
+    PSeInt comienza a contar desde <strong>1</strong>. Python, Java, C, C++ y JavaScript comienzan desde <strong>0</strong>. Este es el primer ajuste que harás al migrar a un lenguaje profesional.
+  </div>
+
+  <h3>Representación en memoria</h3>
+  <p>Los elementos de un arreglo ocupan posiciones de memoria <strong>consecutivas</strong>. Para un arreglo de enteros de 4 bytes cada uno, el sistema solo necesita saber dónde empieza el arreglo para calcular la dirección de cualquier elemento:</p>
+
+  <div class="cb">
+    <div class="cb-top"><span class="cb-lang">Fórmula de acceso — Cualquier lenguaje</span><div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+    <pre>
+<span class="cmt">// Dirección de memoria del elemento i:</span>
+dirección = dirección_base + (i × tamaño_elemento)
+
+<span class="cmt">// Ejemplo: arreglo de enteros (4 bytes), base en dirección 1000</span>
+<span class="cmt">// notas[0] → 1000 + (0 × 4) = 1000</span>
+<span class="cmt">// notas[1] → 1000 + (1 × 4) = 1004</span>
+<span class="cmt">// notas[2] → 1000 + (2 × 4) = 1008</span>
+<span class="cmt">// notas[3] → 1000 + (3 × 4) = 1012</span>
+    </pre>
+  </div>
+
+  <h3>Operaciones esenciales</h3>
+  <table>
+    <tr><th>Operación</th><th>PSeInt</th><th>Python</th><th>Java/C++</th></tr>
+    <tr><td>Declarar</td><td><code>Definir v Como Entero[N]</code></td><td><code>v = [0] * N</code></td><td><code>int v[N];</code></td></tr>
+    <tr><td>Asignar</td><td><code>v[i] &lt;- valor</code></td><td><code>v[i] = valor</code></td><td><code>v[i] = valor;</code></td></tr>
+    <tr><td>Leer</td><td><code>x &lt;- v[i]</code></td><td><code>x = v[i]</code></td><td><code>x = v[i];</code></td></tr>
+    <tr><td>Tamaño</td><td><code>N (definido al declarar)</code></td><td><code>len(v)</code></td><td><code>v.length / sizeof</code></td></tr>
+    <tr><td>Recorrer</td><td><code>Para i &lt;- 1 Hasta N</code></td><td><code>for x in v:</code></td><td><code>for(int i=0; i&lt;N; i++)</code></td></tr>
+  </table>
+
+  <h3>Arreglos de cadenas y otros tipos</h3>
+  <div class="cb">
+    <div class="cb-top"><span class="cb-lang">PSeInt — arreglo de cadenas, búsqueda lineal</span><div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+    <pre>
+<span class="kw">Algoritmo</span> <span class="fn">BuscarNombre</span>
+    <span class="kw">Definir</span> <span class="var">nombres</span> <span class="kw">Como</span> <span class="kw2">Cadena</span>[<span class="num">4</span>]
+    <span class="kw">Definir</span> <span class="var">buscar</span> <span class="kw">Como</span> <span class="kw2">Cadena</span>
+    <span class="kw">Definir</span> <span class="var">i</span> <span class="kw">Como</span> <span class="kw2">Entero</span>
+    <span class="kw">Definir</span> <span class="var">encontrado</span> <span class="kw">Como</span> <span class="kw2">Logico</span>
+
+    <span class="var">nombres</span>[<span class="num">1</span>] &lt;- <span class="str">"Ana"</span>
+    <span class="var">nombres</span>[<span class="num">2</span>] &lt;- <span class="str">"Luis"</span>
+    <span class="var">nombres</span>[<span class="num">3</span>] &lt;- <span class="str">"Marta"</span>
+    <span class="var">nombres</span>[<span class="num">4</span>] &lt;- <span class="str">"Pedro"</span>
+
+    <span class="kw">Escribir</span> <span class="str">"¿A quién buscas?"</span>
+    <span class="kw">Leer</span> <span class="var">buscar</span>
+    <span class="var">encontrado</span> &lt;- <span class="num">Falso</span>
+
+    <span class="kw">Para</span> <span class="var">i</span> &lt;- <span class="num">1</span> <span class="kw">Hasta</span> <span class="num">4</span> <span class="kw">Hacer</span>
+        <span class="kw">Si</span> <span class="var">nombres</span>[<span class="var">i</span>] = <span class="var">buscar</span> <span class="kw">Entonces</span>
+            <span class="kw">Escribir</span> <span class="str">"Encontrado en posición: "</span>, <span class="var">i</span>
+            <span class="var">encontrado</span> &lt;- <span class="num">Verdadero</span>
+        <span class="kw">FinSi</span>
+    <span class="kw">FinPara</span>
+
+    <span class="kw">Si</span> <span class="hi">NO</span> <span class="var">encontrado</span> <span class="kw">Entonces</span>
+        <span class="kw">Escribir</span> <span class="str">"No encontrado."</span>
+    <span class="kw">FinSi</span>
+<span class="kw">FinAlgoritmo</span>
+    </pre>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     2. ARREGLOS BIDIMENSIONALES
+══════════════════════════════════════ -->
+<section class="sec" id="multidim">
+  <div class="sec-header">
+    <span class="sec-num">§ 2</span>
+    <h2>Arreglos bidimensionales (Matrices)</h2>
+  </div>
+  <p class="sec-desc">Arreglos de arreglos — tablas con filas y columnas</p>
+
+  <p>Un arreglo bidimensional, comúnmente llamado <em>matriz</em>, organiza los datos en una estructura de <strong>tabla</strong>: tiene filas y columnas. Para acceder a cualquier elemento necesitas <strong>dos índices</strong>: primero la fila, luego la columna.</p>
+
+  <p>Piénsalo como una hoja de cálculo: la celda B3 es la columna B, fila 3. En código, escribirías <code>hoja[3][2]</code> (fila 3, columna 2 con índice base-0) o <code>hoja[3, 2]</code> en PSeInt (fila 3, columna 2 con índice base-1).</p>
+
+  <div class="cb">
+    <div class="cb-top"><span class="cb-lang">PSeInt — declarar, llenar y leer una matriz</span><div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+    <pre>
+<span class="kw">Algoritmo</span> <span class="fn">TablaNotas</span>
+    <span class="cmt">// Matriz: 3 alumnos × 4 materias</span>
+    <span class="kw">Definir</span> <span class="var">notas</span> <span class="kw">Como</span> <span class="kw2">Real</span>[<span class="num">3</span>, <span class="num">4</span>]
+    <span class="kw">Definir</span> <span class="hi">fila</span>, <span class="hi">col</span>, <span class="var">suma</span> <span class="kw">Como</span> <span class="kw2">Real</span>
+
+    <span class="cmt">// Llenar con dos ciclos anidados</span>
+    <span class="kw">Para</span> <span class="hi">fila</span> &lt;- <span class="num">1</span> <span class="kw">Hasta</span> <span class="num">3</span> <span class="kw">Hacer</span>          <span class="cmt">// recorre FILAS</span>
+        <span class="kw">Para</span> <span class="hi">col</span> &lt;- <span class="num">1</span> <span class="kw">Hasta</span> <span class="num">4</span> <span class="kw">Hacer</span>       <span class="cmt">// recorre COLUMNAS</span>
+            <span class="kw">Escribir</span> <span class="str">"Alumno "</span>, <span class="hi">fila</span>, <span class="str">" | Materia "</span>, <span class="hi">col</span>
+            <span class="kw">Leer</span> <span class="var">notas</span>[<span class="hi">fila</span>, <span class="hi">col</span>]
+        <span class="kw">FinPara</span>
+    <span class="kw">FinPara</span>
+
+    <span class="cmt">// Calcular promedio de un alumno (fila 2)</span>
+    <span class="var">suma</span> &lt;- <span class="num">0</span>
+    <span class="kw">Para</span> <span class="hi">col</span> &lt;- <span class="num">1</span> <span class="kw">Hasta</span> <span class="num">4</span> <span class="kw">Hacer</span>
+        <span class="var">suma</span> &lt;- <span class="var">suma</span> + <span class="var">notas</span>[<span class="num">2</span>, <span class="hi">col</span>]
+    <span class="kw">FinPara</span>
+    <span class="kw">Escribir</span> <span class="str">"Promedio alumno 2: "</span>, <span class="var">suma</span> / <span class="num">4</span>
+<span class="kw">FinAlgoritmo</span>
+    </pre>
+  </div>
+
+  <h3>Almacenamiento en memoria — Row-major order</h3>
+  <p>Aunque visualmente parece una tabla, en la memoria del computador los datos se guardan en una <strong>línea recta continua</strong>. El estándar más común (C, C++, Java, Python) es el <em>row-major order</em> (orden de fila principal): se guardan todos los elementos de la fila 1, luego todos los de la fila 2, y así sucesivamente.</p>
+
+  <div class="cb">
+    <div class="cb-top"><span class="cb-lang">Row-major order — cómo se ve en memoria (base-0)</span><div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+    <pre>
+<span class="cmt">// Matriz 3×4 lógica:</span>
+<span class="cmt">// [A B C D]   ← fila 0</span>
+<span class="cmt">// [E F G H]   ← fila 1</span>
+<span class="cmt">// [I J K L]   ← fila 2</span>
+
+<span class="cmt">// En memoria (una sola fila continua):</span>
+<span class="cmt">// A  B  C  D  E  F  G  H  I  J  K  L</span>
+<span class="cmt">// 0  1  2  3  4  5  6  7  8  9 10 11</span>
+
+<span class="cmt">// Fórmula de acceso para m[i][j] con N columnas:</span>
+dirección = base + (i × N + j) × tamaño_elemento
+
+<span class="cmt">// Ejemplo: m[1][2] → G → posición (1×4 + 2) = 6 ✓</span>
+    </pre>
+  </div>
+
+  <div class="callout warn">
+    <span class="callout-title">⚡ Excepción — Fortran usa column-major</span>
+    Fortran (norma ISO/IEC 1539-1) almacena los datos en <em>column-major order</em>: primero todos los elementos de la columna 1, luego la columna 2. Esto afecta el rendimiento al recorrer la matriz y es una razón por la que no se puede mezclar código C y Fortran sin precaución. La existencia de ambas convenciones demuestra que el orden de los índices es <strong>una decisión de diseño del lenguaje</strong>, no una ley natural.
+  </div>
+
+  <h3>Arreglos de tres o más dimensiones</h3>
+  <p>La lógica se extiende a tres o más dimensiones. Un arreglo 3D puede representar, por ejemplo, los píxeles de un video: <code>video[frame, fila, columna]</code>.</p>
+  <div class="cb">
+    <div class="cb-top"><span class="cb-lang">PSeInt — arreglo 3D (cubo de datos)</span><div class="cb-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div></div>
+    <pre>
+<span class="cmt">// Temperaturas: 12 meses × 7 días × 24 horas</span>
+<span class="kw">Definir</span> <span class="var">temp</span> <span class="kw">Como</span> <span class="kw2">Real</span>[<span class="num">12</span>, <span class="num">7</span>, <span class="num">24</span>]
+
+<span class="cmt">// Acceder: mes 3, día 5, hora 14</span>
+<span class="var">temp</span>[<span class="num">3</span>, <span class="num">5</span>, <span class="num">14</span>] &lt;- <span class="num">22.5</span>
+
+<span class="cmt">// El primer índice sigue siendo la dimensión "más externa"</span>
+<span class="cmt">// [mes][día][hora] — siempre de mayor a menor agrupación</span>
+    </pre>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     3. DEMO INTERACTIVA
+══════════════════════════════════════ -->
+<section class="sec" id="interactivo">
+  <div class="sec-header">
+    <span class="sec-num">§ 3</span>
+    <h2>Exploración interactiva</h2>
+  </div>
+  <p class="sec-desc">Haz clic en las celdas para entender los índices en acción</p>
+
+  <div class="matrix-demo">
+    <div class="matrix-demo-title">Matriz 5×5 — índices reales</div>
+
+    <div class="matrix-tabs">
+      <button class="matrix-tab active" onclick="setMode('base1')">Base 1 (PSeInt)</button>
+      <button class="matrix-tab" onclick="setMode('base0')">Base 0 (C/Java/Python)</button>
+    </div>
+
+    <div class="grids-container">
+      <!-- Matriz interactiva -->
+      <div class="grid-panel matrix-panel">
+        <h4>✓ Arreglo 2D [fila, columna]</h4>
+        <div class="col-labels" id="colLabels"></div>
+        <div class="imatrix-with-labels">
+          <div class="row-labels" id="rowLabels"></div>
+          <div class="imatrix" id="imatrix"></div>
+        </div>
+        <div class="info-panel" id="matInfo">Haz clic en cualquier celda para ver sus índices</div>
+      </div>
+
+      <!-- Plano cartesiano -->
+      <div class="grid-panel cart-panel">
+        <h4>✗ Plano Cartesiano (x, y)</h4>
+        <div class="cart-svg-wrap">
+          <svg id="cartSvg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+            <rect width="240" height="240" fill="#F5F2EB"/>
+            <!-- Grid suave -->
+            <g stroke="rgba(30,64,175,0.08)" stroke-width="1">
+              <line x1="40" y1="20" x2="40" y2="220"/>
+              <line x1="80" y1="20" x2="80" y2="220"/>
+              <line x1="120" y1="20" x2="120" y2="220"/>
+              <line x1="160" y1="20" x2="160" y2="220"/>
+              <line x1="200" y1="20" x2="200" y2="220"/>
+              <line x1="20" y1="40" x2="220" y2="40"/>
+              <line x1="20" y1="80" x2="220" y2="80"/>
+              <line x1="20" y1="120" x2="220" y2="120"/>
+              <line x1="20" y1="160" x2="220" y2="160"/>
+              <line x1="20" y1="200" x2="220" y2="200"/>
+            </g>
+            <!-- Ejes -->
+            <line x1="20" y1="120" x2="228" y2="120" stroke="#B91C1C" stroke-width="2"/>
+            <line x1="120" y1="228" x2="120" y2="12" stroke="#B91C1C" stroke-width="2"/>
+            <!-- Flechas -->
+            <polygon points="228,120 218,115 218,125" fill="#B91C1C"/>
+            <polygon points="120,12 115,22 125,22" fill="#B91C1C"/>
+            <!-- Labels ejes -->
+            <text x="232" y="124" font-family="Fira Code" font-size="12" fill="#B91C1C" font-weight="600">x</text>
+            <text x="114" y="10" font-family="Fira Code" font-size="12" fill="#B91C1C" font-weight="600">y</text>
+            <!-- Números eje X -->
+            <text x="37" y="134" font-family="Fira Code" font-size="9" fill="#6B6B8A">-2</text>
+            <text x="77" y="134" font-family="Fira Code" font-size="9" fill="#6B6B8A">-1</text>
+            <text x="157" y="134" font-family="Fira Code" font-size="9" fill="#6B6B8A">1</text>
+            <text x="197" y="134" font-family="Fira Code" font-size="9" fill="#6B6B8A">2</text>
+            <!-- Números eje Y -->
+            <text x="125" y="84" font-family="Fira Code" font-size="9" fill="#6B6B8A">1</text>
+            <text x="125" y="44" font-family="Fira Code" font-size="9" fill="#6B6B8A">2</text>
+            <text x="125" y="164" font-family="Fira Code" font-size="9" fill="#6B6B8A">-1</text>
+            <text x="125" y="204" font-family="Fira Code" font-size="9" fill="#6B6B8A">-2</text>
+            <!-- Origen -->
+            <text x="124" y="134" font-family="Fira Code" font-size="9" fill="#6B6B8A">0</text>
+            <!-- Punto marcado -->
+            <circle id="cartPoint" cx="200" cy="40" r="6" fill="#1E40AF" opacity="0"/>
+            <line id="cartLineX" x1="200" y1="40" x2="200" y2="120" stroke="#1E40AF" stroke-dasharray="5,3" stroke-width="1.2" opacity="0"/>
+            <line id="cartLineY" x1="120" y1="40" x2="200" y2="40" stroke="#1E40AF" stroke-dasharray="5,3" stroke-width="1.2" opacity="0"/>
+            <text id="cartLabel" x="206" y="37" font-family="Fira Code" font-size="9" fill="#1E40AF" font-weight="600" opacity="0"></text>
+            <!-- Anotación Y crece arriba -->
+            <text x="22" y="52" font-family="DM Sans" font-size="8.5" fill="#B91C1C">Y crece ↑</text>
+            <text x="22" y="64" font-family="DM Sans" font-size="8.5" fill="#B91C1C">hacia arriba</text>
+          </svg>
+        </div>
+        <div class="info-panel" id="cartInfo" style="margin-top:10px">El mismo clic aparecerá aquí en coordenadas (x, y) — observa las diferencias</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     4. ≠ PLANO CARTESIANO
+══════════════════════════════════════ -->
+<section class="sec" id="nocartesiano">
+  <div class="sec-header">
+    <span class="sec-num">§ 4</span>
+    <h2>Por qué una matriz <em>no es</em> un plano cartesiano</h2>
+  </div>
+  <p class="sec-desc">El error conceptual más común — y cómo razonarlo correctamente</p>
+
+  <p>Cuando un estudiante ve por primera vez que se accede a una celda con dos números — <code>matriz[2,3]</code> — la analogía con un punto cartesiano <code>(x=2, y=3)</code> parece natural. Los dos usan dos números. Los dos ubican algo en un espacio de dos dimensiones. Pero la comparación es <strong>superficial y engañosa</strong>, y produce errores reales en programas reales.</p>
+
+  <div class="split-compare">
+    <div class="split-col sc-r">
+      <h5>Plano Cartesiano (x, y)</h5>
+      <ul>
+        <li>El <strong>primer número es X</strong>: desplazamiento horizontal, hacia la derecha</li>
+        <li>El <strong>segundo número es Y</strong>: desplazamiento vertical, hacia arriba</li>
+        <li>Y crece hacia <strong>arriba</strong> (cuadrante I en el extremo superior derecho)</li>
+        <li>El origen (0, 0) está al <strong>centro</strong> del espacio</li>
+        <li>Existen valores <strong>negativos</strong> (cuadrantes II, III, IV)</li>
+        <li>Es un espacio <strong>matemático continuo</strong> — infinitos puntos</li>
+        <li>Pertenece a la <strong>geometría analítica</strong></li>
+      </ul>
+    </div>
+    <div class="split-divider">≠&nbsp;NO&nbsp;SON&nbsp;LO&nbsp;MISMO</div>
+    <div class="split-col sc-g">
+      <h5>Arreglo 2D [fila, columna]</h5>
+      <ul>
+        <li>El <strong>primer índice es la FILA</strong>: posición vertical, desde arriba</li>
+        <li>El <strong>segundo índice es la COLUMNA</strong>: posición horizontal, desde la izquierda</li>
+        <li>Los índices crecen hacia <strong>abajo y a la derecha</strong></li>
+        <li>El origen [0,0] o [1,1] está en la <strong>esquina superior izquierda</strong></li>
+        <li>Solo índices <strong>enteros no negativos</strong></li>
+        <li>Es una estructura <strong>discreta y finita</strong> — N×M elementos exactos</li>
+        <li>Pertenece a las <strong>ciencias de la computación</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>El error clásico demostrado</h3>
+
+  <div class="error-demo">
+    <div class="error-demo-header">
+      <span class="badge-error">❌ Código con error conceptual</span>
+      Quiero marcar el punto cartesiano (x=3, y=2) en un mapa
+    </div>
+    <div class="cb" style="margin:0;border-radius:0;box-shadow:none">
+      <pre>
+<span class="kw">Definir</span> <span class="var">mapa</span> <span class="kw">Como</span> <span class="kw2">Entero</span>[<span class="num">5</span>, <span class="num">5</span>]
+
+<span class="cmt">// ❌ ERROR: "quiero (x=3, y=2), entonces escribo mapa[3,2]"</span>
+<span class="var">mapa</span>[<span class="num">3</span>, <span class="num">2</span>] &lt;- <span class="num">1</span>
+
+<span class="cmt">// Pero mapa[3,2] es → fila 3, columna 2</span>
+<span class="cmt">// Eso visualmente corresponde a x=2, y=3 ← ¡INVERTIDO!</span>
+      </pre>
+    </div>
+  </div>
+
+  <div class="error-demo">
+    <div class="error-demo-header">
+      <span class="badge-ok">✓ Código correcto</span>
+      Para representar (x,y) en una matriz, los índices se invierten
+    </div>
+    <div class="cb" style="margin:0;border-radius:0;box-shadow:none">
+      <pre>
+<span class="cmt">// ✅ CORRECTO: mapa[y, x] — primero la fila (y), luego la columna (x)</span>
+<span class="var">mapa</span>[<span class="num">2</span>, <span class="num">3</span>] &lt;- <span class="num">1</span>   <span class="cmt">// fila 2, columna 3 → representa (x=3, y=2) ✓</span>
+
+<span class="cmt">// Pero aún hay otro problema: en la matriz, "fila 1" está ARRIBA.</span>
+<span class="cmt">// En cartesiano, y=1 también está arriba (si el origen está abajo).</span>
+<span class="cmt">// Pero si el origen está en la esquina SUPERIOR izquierda de la</span>
+<span class="cmt">// pantalla (como en píxeles de imagen), y crece hacia ABAJO.</span>
+<span class="cmt">// Debes saber qué convención usa tu problema antes de programar.</span>
+      </pre>
+    </div>
+  </div>
+
+  <div class="callout danger">
+    <span class="callout-title">🚫 Segundo problema: la dirección de Y</span>
+    <p>Incluso si invertiste los índices, hay otra trampa: en el plano cartesiano matemático, <strong>Y crece hacia arriba</strong>. En la mayoría de sistemas de coordenadas de pantalla (imágenes, píxeles, videojuegos 2D), Y crece hacia <strong>abajo</strong> — igual que los índices de fila de una matriz. Esto causa bugs visuales en gráficas cuando no se tiene en cuenta.</p>
+  </div>
+
+  <h3>Tabla completa de diferencias</h3>
+  <table>
+    <tr><th>Característica</th><th>Plano Cartesiano</th><th>Arreglo 2D</th></tr>
+    <tr><td>Primer número</td><td>X → horizontal</td><td>Fila → vertical (desde arriba)</td></tr>
+    <tr><td>Segundo número</td><td>Y → vertical</td><td>Columna → horizontal (desde izquierda)</td></tr>
+    <tr><td>Dirección de Y / fila</td><td>Y crece hacia <strong>arriba</strong></td><td>Índice de fila crece hacia <strong>abajo</strong></td></tr>
+    <tr><td>Origen</td><td>(0,0) al <strong>centro</strong></td><td>[0,0] o [1,1] en esquina <strong>superior izquierda</strong></td></tr>
+    <tr><td>Valores negativos</td><td>Sí — 4 cuadrantes</td><td>No — solo enteros positivos</td></tr>
+    <tr><td>Naturaleza del espacio</td><td>Continuo e infinito</td><td>Discreto y finito</td></tr>
+    <tr><td>Tipo de objeto</td><td>Par ordenado matemático</td><td>Expresión de acceso a memoria</td></tr>
+    <tr><td>Disciplina de origen</td><td>Geometría analítica (Descartes, 1637)</td><td>Ciencias de la computación (s. XX)</td></tr>
+  </table>
+
+  <div class="callout ok">
+    <span class="callout-title">🧠 Regla mnemotécnica</span>
+    <strong>"RC — como Radio Control"</strong>: en arreglos, siempre va primero la <strong>R</strong>ow (Fila) y luego la <strong>C</strong>olumn (Columna). En cualquier lenguaje del mundo.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     5. NORMAS ISO
+══════════════════════════════════════ -->
+<section class="sec" id="normas">
+  <div class="sec-header">
+    <span class="sec-num">§ 5</span>
+    <h2>Normas ISO/IEC relacionadas</h2>
+  </div>
+  <p class="sec-desc">Estándares internacionales que formalizan cómo se estructuran los arreglos multidimensionales</p>
+
+  <p>Las siguientes normas de la Organización Internacional de Normalización (ISO) y la Comisión Electrotécnica Internacional (IEC) definen de manera rigurosa cómo los lenguajes de programación deben tratar los arreglos multidimensionales. Todas coinciden en una conclusión: los arreglos son estructuras de acceso por índice entero, y no guardan relación formal con los sistemas de coordenadas geométricas.</p>
+
+  <div class="iso-grid">
+
+    <div class="iso-card">
+      <div><div class="iso-badge">ISO/IEC 9899:2018</div></div>
+      <div>
+        <h5>Lenguaje de programación C (C18) — §6.5.2.1</h5>
+        <p>Es la norma más influyente en este tema. Define que los arreglos multidimensionales en C se almacenan en <strong>row-major order</strong>: en una declaración <code>int a[F][C]</code>, el primer índice recorre filas y el segundo recorre columnas. La norma especifica explícitamente que <code>a[i][j]</code> es equivalente a <code>*(a + i*C + j)</code>, donde <code>i</code> es la fila. Nada en esta definición tiene relación con geometría o el plano cartesiano.</p>
+        <span class="iso-detail">Sección §6.5.2.1 "Array subscripting" · §6.7.6.2 "Array declarators"</span>
+      </div>
+    </div>
+
+    <div class="iso-card">
+      <div><div class="iso-badge">ISO/IEC 14882:2020</div></div>
+      <div>
+        <h5>Lenguaje de programación C++ (C++20) — [dcl.array]</h5>
+        <p>Hereda y extiende la convención de C. La sección <em>[dcl.array]</em> confirma que en <code>T a[N1][N2]</code>, <code>N1</code> es la dimensión de filas y <code>N2</code> la de columnas. Adicionalmente, <code>std::mdspan</code> (C++23) introduce <code>layout_right</code> como valor por defecto — el nombre técnico de row-major — lo que formaliza aún más que el primer índice es la fila, no la coordenada X.</p>
+        <span class="iso-detail">Sección [dcl.array] · Propuesta P0009 (std::mdspan) integrada en C++23</span>
+      </div>
+    </div>
+
+    <div class="iso-card">
+      <div><div class="iso-badge">ISO/IEC 1539-1:2018</div></div>
+      <div>
+        <h5>Lenguaje de programación Fortran — La excepción que confirma la regla</h5>
+        <p>Fortran usa <strong>column-major order</strong>: el primer índice varía más rápido (es la columna). <code>a(i,j)</code> en Fortran tiene <code>i</code> como columna y <code>j</code> como fila — exactamente lo opuesto a C. Esta diferencia es la causa de bugs reales cuando se mezclan ambos lenguajes. El hecho de que dos normas ISO lleguen a convenciones opuestas prueba definitivamente que el orden de índices es una <em>convención</em>, no una verdad matemática universal, y mucho menos equivale al plano cartesiano.</p>
+        <span class="iso-detail">Sección 5.8.7 "Array element order" · §16.9.54 sobre almacenamiento contiguo</span>
+      </div>
+    </div>
+
+    <div class="iso-card">
+      <div><div class="iso-badge">ISO/IEC 8652:2012</div></div>
+      <div>
+        <h5>Lenguaje de programación Ada (Ada 2012)</h5>
+        <p>Ada permite que los índices de arreglos sean de cualquier tipo discreto (incluidos rangos como <code>1..5</code> o enumeraciones) y no impone un origen fijo. La norma distingue formalmente entre <em>array index</em> (un identificador de posición en la estructura) y <em>geometric coordinate</em> (un valor en un espacio métrico). Los arreglos Ada no tienen orientación espacial implícita.</p>
+        <span class="iso-detail">Sección 3.6 "Array types" · 3.6.1 "Index constraints and discrete ranges"</span>
+      </div>
+    </div>
+
+    <div class="iso-card">
+      <div><div class="iso-badge">ISO/IEC 13568:2002</div></div>
+      <div>
+        <h5>Método de especificación formal Z — Fundamento matemático</h5>
+        <p>El método Z, usado para especificar software crítico (aviónica, medicina), formaliza los arreglos como <strong>funciones parciales de tuplas de enteros a valores</strong>: <code>Array ≜ (ℕ × ℕ) ⇸ Value</code>. Esta definición es radicalmente distinta a un vector en un espacio euclídeo. No hay noción de distancia, ángulo, ni orientación. Es la separación más formal y rigurosa entre "índice" y "coordenada".</p>
+        <span class="iso-detail">Sección 4 "Mathematical toolkit" · Definición de funciones parciales y dominios</span>
+      </div>
+    </div>
+
+    <div class="iso-card">
+      <div><div class="iso-badge">IEC 61131-3:2013</div></div>
+      <div>
+        <h5>Lenguajes para controladores programables (PLCs) — Automatización industrial</h5>
+        <p>En sistemas de control industrial, esta norma define arreglos con <strong>índices enteros declarados explícitamente por el programador</strong>: <code>ARRAY[1..5, 1..3] OF INT</code>. El primer rango corresponde a la primera dimensión (filas) y el segundo a la segunda (columnas). La norma establece que estos índices <em>"no tienen relación con sistemas de referencia físicos o geométricos"</em> y que su interpretación depende completamente del contexto del programa.</p>
+        <span class="iso-detail">Sección 2.3.3 "Derived data types" · ARRAY data type specification</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout info">
+    <span class="callout-title">📋 Lo que todas estas normas tienen en común</span>
+    Ninguna define los arreglos multidimensionales en términos geométricos. Todas los definen como <strong>mapeos de tuplas de enteros a valores</strong>. El acceso por dos índices no implica orientación espacial, distancia, ni relación con el plano cartesiano — es simplemente una dirección de memoria calculada algebraicamente.
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     6. FUENTES
+══════════════════════════════════════ -->
+<section class="sec" id="fuentes">
+  <div class="sec-header">
+    <span class="sec-num">§ 6</span>
+    <h2>Fuentes oficiales y referencias</h2>
+  </div>
+  <p class="sec-desc">Dónde verificar cada afirmación de esta guía</p>
+
+  <h3>PSeInt — Documentación oficial</h3>
+  <div class="source-grid">
+    <a class="source-card" href="https://pseint.sourceforge.net" target="_blank" rel="noopener">
+      <div class="source-num">F1</div>
+      <div>
+        <h5>Sitio oficial de PSeInt</h5>
+        <p>Página principal del proyecto creado por Pablo Novara. Incluye descarga, manual completo del lenguaje, referencia de sintaxis y documentación de arreglos (sección "Arreglos y matrices").</p>
+        <div class="source-url">https://pseint.sourceforge.net</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://sourceforge.net/projects/pseint/" target="_blank" rel="noopener">
+      <div class="source-num">F2</div>
+      <div>
+        <h5>Repositorio SourceForge de PSeInt</h5>
+        <p>Código fuente del proyecto, historial de versiones y notas de cambio. Permite verificar las decisiones de diseño del lenguaje, incluyendo la indexación base-1 y la sintaxis de arreglos multidimensionales.</p>
+        <div class="source-url">https://sourceforge.net/projects/pseint/</div>
+      </div>
+    </a>
+  </div>
+
+  <h3>Estándares ISO/IEC — Arreglos y lenguajes</h3>
+  <div class="source-grid">
+    <a class="source-card" href="https://www.iso.org/standard/74528.html" target="_blank" rel="noopener">
+      <div class="source-num">F3</div>
+      <div>
+        <h5>ISO/IEC 9899:2018 — Programming languages: C</h5>
+        <p>El estándar definitivo del lenguaje C. Define row-major order en §6.5.2.1 y §6.7.6.2. Base de la convención [fila][columna] usada por C++, Java, Python y prácticamente todos los lenguajes modernos.</p>
+        <div class="source-url">https://www.iso.org/standard/74528.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.iso.org/standard/79358.html" target="_blank" rel="noopener">
+      <div class="source-num">F4</div>
+      <div>
+        <h5>ISO/IEC 14882:2020 — Programming languages: C++</h5>
+        <p>Estándar de C++20. Sección [dcl.array] y la propuesta P0009 (std::mdspan con layout_right como default) confirman la convención fila-columna para arreglos multidimensionales nativos.</p>
+        <div class="source-url">https://www.iso.org/standard/79358.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.iso.org/standard/72320.html" target="_blank" rel="noopener">
+      <div class="source-num">F5</div>
+      <div>
+        <h5>ISO/IEC 1539-1:2018 — Programming languages: Fortran</h5>
+        <p>Define column-major order — la excepción que prueba que la convención de índices es una decisión de diseño. El contraste C vs Fortran es evidencia directa de que no hay una "verdad matemática" en cómo se ordenan los índices.</p>
+        <div class="source-url">https://www.iso.org/standard/72320.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www.iso.org/standard/37100.html" target="_blank" rel="noopener">
+      <div class="source-num">F6</div>
+      <div>
+        <h5>ISO/IEC 13568:2002 — Specification language Z</h5>
+        <p>Formaliza los arreglos como funciones parciales de tuplas de enteros a valores — la definición matemática más rigurosa que separa "índice" de "coordenada geométrica".</p>
+        <div class="source-url">https://www.iso.org/standard/37100.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://webstore.iec.ch/publication/4552" target="_blank" rel="noopener">
+      <div class="source-num">F7</div>
+      <div>
+        <h5>IEC 61131-3:2013 — Programmable controllers: Programming languages</h5>
+        <p>Estándar de automatización industrial. Define arreglos con rangos declarados explícitamente y establece que los índices no tienen relación con sistemas de referencia geométricos.</p>
+        <div class="source-url">https://webstore.iec.ch/publication/4552</div>
+      </div>
+    </a>
+  </div>
+
+  <h3>Referencias técnicas públicas y gratuitas</h3>
+  <div class="source-grid">
+    <a class="source-card" href="https://en.cppreference.com/w/c/language/array" target="_blank" rel="noopener">
+      <div class="source-num">F8</div>
+      <div>
+        <h5>cppreference.com — C Arrays (referencia pública del estándar C)</h5>
+        <p>Documentación pública y verificada del estándar C. Sección sobre arreglos multidimensionales con ejemplos de row-major order y cálculo de dirección de memoria. Referencia usada por millones de programadores.</p>
+        <div class="source-url">https://en.cppreference.com/w/c/language/array</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://en.cppreference.com/w/cpp/container/mdspan" target="_blank" rel="noopener">
+      <div class="source-num">F9</div>
+      <div>
+        <h5>cppreference.com — std::mdspan (C++23) y layout_right</h5>
+        <p>Documenta el nuevo tipo <code>std::mdspan</code> que formaliza el acceso a arreglos multidimensionales. <code>layout_right</code> (row-major) es el layout por defecto, confirmando que el primer índice siempre es la fila.</p>
+        <div class="source-url">https://en.cppreference.com/w/cpp/container/mdspan</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://numpy.org/doc/stable/reference/internals.html" target="_blank" rel="noopener">
+      <div class="source-num">F10</div>
+      <div>
+        <h5>NumPy — Internals: Memory layout and C-order vs Fortran-order</h5>
+        <p>Documentación oficial de NumPy (Python). Explica en detalle C-order (row-major, primer índice = fila) vs F-order (Fortran, column-major) y por qué esta distinción importa para el rendimiento y la interoperabilidad.</p>
+        <div class="source-url">https://numpy.org/doc/stable/reference/internals.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://docs.oracle.com/javase/specs/jls/se21/html/jls-10.html" target="_blank" rel="noopener">
+      <div class="source-num">F11</div>
+      <div>
+        <h5>Oracle — Java SE 21 Language Specification: §10 Arrays</h5>
+        <p>Especificación oficial de Java. Define que los arreglos Java son objetos con indexación base-0 y que los arreglos multidimensionales son arreglos de arreglos: el primer índice selecciona el arreglo de fila, el segundo la columna.</p>
+        <div class="source-url">https://docs.oracle.com/javase/specs/jls/se21/html/jls-10.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://www-cs-faculty.stanford.edu/~knuth/taocp.html" target="_blank" rel="noopener">
+      <div class="source-num">F12</div>
+      <div>
+        <h5>Knuth — The Art of Computer Programming, Vol. 1 (Fundamental Algorithms)</h5>
+        <p>La obra de referencia canónica en Ciencias de la Computación. El §2.2 y el §2.2.3 formalizan arreglos como estructuras de datos y su mapeo en memoria. Addison-Wesley, 3ª ed. ISBN 978-0-201-89683-1.</p>
+        <div class="source-url">https://www-cs-faculty.stanford.edu/~knuth/taocp.html</div>
+      </div>
+    </a>
+    <a class="source-card" href="https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/" target="_blank" rel="noopener">
+      <div class="source-num">F13</div>
+      <div>
+        <h5>Cormen, Leiserson, Rivest, Stein — Introduction to Algorithms (CLRS), 4ª ed.</h5>
+        <p>El texto universitario más usado mundialmente para algoritmos y estructuras de datos. Define arreglos, matrices y operaciones sobre ellas con notación formal. MIT Press, 2022. ISBN 978-0-262-04630-5.</p>
+        <div class="source-url">https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="callout ok" style="margin-top:36px">
+    <span class="callout-title">✔ Conclusión</span>
+    <p>Un arreglo multidimensional es, formalmente, una <strong>función de mapeo de tuplas de enteros a valores almacenados contiguamente en memoria</strong>. El primer índice es la fila, el segundo la columna. La dirección crece hacia abajo y a la derecha. Nada de esto tiene relación con el plano cartesiano de Descartes, donde el primer número es X (horizontal), el segundo Y (vertical hacia arriba), y pueden existir valores negativos.</p>
+    <p style="margin:0">Usar los dos indistintamente produce bugs silenciosos, código invertido y representaciones incorrectas. La distinción es fundamental para cualquier trabajo con imágenes, videojuegos, álgebra lineal computacional o ciencia de datos.</p>
+  </div>
+</section>
+
+<footer class="page-footer">
+  <span>arreglos[] · © Derechos Reservados </span>
+  <span style="font-family:var(--sans);font-size:.75rem;color:var(--ink3)">PSeInt · ISO/IEC 9899 · 14882 · 1539-1 · 13568 · IEC 61131-3</span>
+</footer>
+
+</div><!-- /page-wrap -->
+
+<script>
+/* ═══ MODO BASE ═══ */
+let currentMode = 'base1';
+let selectedRow = -1, selectedCol = -1;
+const ROWS = 5, COLS = 5;
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.matrix-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  buildMatrix();
+  selectedRow = -1; selectedCol = -1;
+  resetInfo();
+}
+
+function offset(n) { return currentMode === 'base0' ? n - 1 : n; }
+
+function buildMatrix() {
+  const matrix = document.getElementById('imatrix');
+  const rowLabels = document.getElementById('rowLabels');
+  const colLabels = document.getElementById('colLabels');
+  matrix.innerHTML = '';
+  rowLabels.innerHTML = '';
+  colLabels.innerHTML = '';
+
+  matrix.style.gridTemplateColumns = `repeat(${COLS}, 46px)`;
+
+  // Col labels
+  for (let c = 1; c <= COLS; c++) {
+    const lbl = document.createElement('div');
+    lbl.className = 'col-label';
+    lbl.textContent = 'col ' + offset(c);
+    colLabels.appendChild(lbl);
+  }
+
+  // Row labels + cells
+  for (let r = 1; r <= ROWS; r++) {
+    const rl = document.createElement('div');
+    rl.className = 'row-label';
+    rl.textContent = offset(r);
+    rowLabels.appendChild(rl);
+
+    for (let c = 1; c <= COLS; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'mcell';
+      cell.dataset.r = r;
+      cell.dataset.c = c;
+      cell.addEventListener('click', () => selectCell(r, c));
+      matrix.appendChild(cell);
+    }
+  }
+}
+
+function selectCell(r, c) {
+  selectedRow = r; selectedCol = c;
+
+  document.querySelectorAll('.mcell').forEach(cell => {
+    const cr = parseInt(cell.dataset.r);
+    const cc = parseInt(cell.dataset.c);
+    cell.classList.remove('selected', 'row-hi', 'col-hi');
+    if (cr === r && cc === c) cell.classList.add('selected');
+    else if (cr === r) cell.classList.add('row-hi');
+    else if (cc === c) cell.classList.add('col-hi');
+  });
+
+  const ri = offset(r), ci = offset(c);
+  const infoEl = document.getElementById('matInfo');
+  infoEl.classList.add('active');
+  infoEl.innerHTML = `
+    <span class="idx">matriz[${ri}, ${ci}]</span><br>
+    <span class="label">Fila ${ri} · Columna ${ci} — primer índice = fila, segundo = columna</span>
+  `;
+
+  // Cartesiano equivalente: x = columna, y = fila (invertido, y creciendo hacia arriba)
+  // Mapeamos la celda a coordenadas cartesianas para mostrar la diferencia
+  const svgSize = 240, margin = 20, step = 40;
+  // Centro del plano en píxeles del SVG
+  const cx = 120, cy = 120;
+  // En el plano cartesiano: x crece a la derecha, y crece hacia ARRIBA
+  // col → x cartesiano, fila → y cartesiano (con y invertido)
+  const cartX = (ci - (currentMode === 'base0' ? 0 : 1)) - 2; // centro en 0
+  const cartY = (ri - (currentMode === 'base0' ? 0 : 1)) - 2; // centro en 0
+
+  // Coordenadas SVG: x crece derecha (igual), y crece ABAJO (invertir para cartesiano)
+  const svgPx = cx + cartX * step;
+  const svgPy = cy - cartY * step; // negado porque SVG y va hacia abajo
+
+  const pt = document.getElementById('cartPoint');
+  const lx = document.getElementById('cartLineX');
+  const ly = document.getElementById('cartLineY');
+  const lb = document.getElementById('cartLabel');
+  const ci2 = document.getElementById('cartInfo');
+
+  if (svgPx >= margin && svgPx <= 220 && svgPy >= margin && svgPy <= 220) {
+    pt.setAttribute('cx', svgPx); pt.setAttribute('cy', svgPy);
+    pt.setAttribute('opacity', '1');
+    lx.setAttribute('x1', svgPx); lx.setAttribute('y1', svgPy);
+    lx.setAttribute('x2', svgPx); lx.setAttribute('y2', cy);
+    lx.setAttribute('opacity', '1');
+    ly.setAttribute('x1', cx); ly.setAttribute('y1', svgPy);
+    ly.setAttribute('x2', svgPx); ly.setAttribute('y2', svgPy);
+    ly.setAttribute('opacity', '1');
+    lb.setAttribute('x', svgPx + 6); lb.setAttribute('y', svgPy - 6);
+    lb.textContent = `(x=${cartX}, y=${cartY})`;
+    lb.setAttribute('opacity', '1');
+
+    ci2.classList.add('active');
+    ci2.innerHTML = `
+      <span class="idx" style="color:#1E40AF">(x=${cartX}, y=${cartY})</span><br>
+      <span class="label" style="color:#6B6B8A">
+        En cartesiano: primer número = X (horizontal), segundo = Y (vertical ↑)<br>
+        <strong style="color:#B91C1C">nota: x=${cartX} ≠ fila ${ri}, y=${cartY} ≠ columna ${ci} — ¡los índices están intercambiados!</strong>
+      </span>
+    `;
+  } else {
+    pt.setAttribute('opacity','0');
+    lx.setAttribute('opacity','0');
+    ly.setAttribute('opacity','0');
+    lb.setAttribute('opacity','0');
+    ci2.classList.remove('active');
+    ci2.textContent = 'Esta celda está fuera del rango visible del plano cartesiano centrado en (0,0)';
+  }
+}
+
+function resetInfo() {
+  document.getElementById('matInfo').classList.remove('active');
+  document.getElementById('matInfo').textContent = 'Haz clic en cualquier celda para ver sus índices';
+  document.getElementById('cartInfo').classList.remove('active');
+  document.getElementById('cartInfo').textContent = 'El mismo clic aparecerá aquí en coordenadas (x, y) — observa las diferencias';
+  ['cartPoint','cartLineX','cartLineY','cartLabel'].forEach(id => {
+    document.getElementById(id).setAttribute('opacity','0');
+  });
+}
+
+/* ═══ NAV ACTIVO ═══ */
+const sections = document.querySelectorAll('section.sec');
+const navLinks = document.querySelectorAll('.top-nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { rootMargin: '-20% 0px -65% 0px' });
+sections.forEach(s => observer.observe(s));
+
+/* ═══ INIT ═══ */
+buildMatrix();
+</script>
+</body>
+</html>
